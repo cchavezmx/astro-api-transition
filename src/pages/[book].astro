@@ -1,0 +1,33 @@
+---
+const { book } = Astro.params
+import Layout from "../layouts/Layout.astro";
+import books from "../data/books";
+import BuyButton from "../components/BuyButton.astro";
+const info = books.find(({ id }) => id === book)
+
+if (!info) {
+  return Astro.redirect('/404')
+}
+---
+
+<Layout title={info.title}>
+  <main class="m-auto max-w-4xl mt-5 p-2">
+    <div class="grid md:grid-cols-[385px_1fr] grid-cols-1 gap-x8 mt-20">
+      <div class="flex flex-col">
+        <picture class="mb-8 w-full relative">
+          <img 
+            src={info.image} 
+            alt={`Portada del libro: ${info.title}`} 
+            style={`view-transition-name: book-${info.id}`}
+          />
+        </picture>
+        <BuyButton />
+      </div>
+      <aside class="pl-4 pt-4">
+        <h1 class="text-4xl font-black mb-4">{info.title}</h1>
+        <p class="text-lg">{info.opinion}</p>
+        <p class="text-lg mt-4"><strong>Autor: </strong>{info.author}</p>        
+      </aside>
+    </div>    
+  </main>
+</Layout>
